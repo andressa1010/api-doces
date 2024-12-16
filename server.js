@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client"
 import express from "express"
 import cors from "cors"
 
-
 const app= express()
 const prisma= new PrismaClient()
 
@@ -36,6 +35,9 @@ app.post("/produtos", async(req,res)=>{
 
 })
 
+ 
+
+
 app.put("/produtos/:id", async (req,res)=>{
     const{id}=req.params
     const{name,image,price,description}=req.body
@@ -55,7 +57,7 @@ app.delete("/produtos/:id", async (req,res)=>{
     const{id}=req.params
     const{name,image,price,description}=req.body
 
-    const editandoProdutos= await prisma.produtos.update({
+    const editandoProdutos= await prisma.produtos.delete({
         where:{
             id: id
         },
