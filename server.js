@@ -53,6 +53,29 @@ app.put("/produtos/:id", async (req,res)=>{
     res.status(200).json(editandoProdutos)
 })
 
+
+app.get("/produtos/:id", async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      // Busca pelo id diretamente no MongoDB
+      const produto = await prisma.produtos.findUnique({
+        where: { id: id }, // ID como string
+      });
+  
+      if (!produto) {
+        return res.status(404).json({ error: "Produto não encontrado" });
+      }
+  
+      res.status(200).json(produto); // Retorna o produto encontrado
+    } catch (error) {
+      console.error("Erro ao buscar o produto:", error);
+      res.status(500).json({ error: "Erro ao buscar o produto" });
+    }
+  });
+  
+
+
 app.delete("/produtos/:id", async (req,res)=>{
     const{id}=req.params
     const{name,image,price,description}=req.body
@@ -67,6 +90,8 @@ app.delete("/produtos/:id", async (req,res)=>{
     })
     res.status(200).json(editandoProdutos)
 })
+
+
 
 
 app.listen(3000, ()=>{
